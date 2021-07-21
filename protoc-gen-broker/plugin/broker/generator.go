@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"strings"
 
+	pb "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
 	"github.com/poonman/shopee/protoc-gen-broker/api"
 	"github.com/poonman/shopee/protoc-gen-broker/generator"
-	pb "github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
 )
 
 // Paths for packages used by code generated in this file,
@@ -134,7 +134,6 @@ func unexport(s string) string {
 func (g *brokerPlugin) generateService(file *generator.FileDescriptor, service *pb.ServiceDescriptorProto, index int) {
 	serviceRule := GetServiceRule(service)
 	if serviceRule == nil {
-		g.gen.Fail("not found service rule")
 		return
 	}
 
@@ -142,7 +141,7 @@ func (g *brokerPlugin) generateService(file *generator.FileDescriptor, service *
 	case *api.ServiceRule_Broker:
 		g.generateKafkaBrokerService(file, service)
 	default:
-		g.gen.Fail("unsupported service rule. ")
+		return
 	}
 }
 
